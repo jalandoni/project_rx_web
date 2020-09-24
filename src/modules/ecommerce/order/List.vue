@@ -91,17 +91,10 @@
             <!-- <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
             </button> -->
-<<<<<<< HEAD
-            <!-- <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
-              <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
-            </button> -->
-            <button class="btn btn-warning" @click="generatePdf(item)">
-=======
 <!--             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button> -->
 <!--             <button class="btn btn-warning" @click="generatePdf(item)">
->>>>>>> a1b4f68b6bab93ee4ac5d7a43554643d825747fc
               <i class="fa fa-print"></i>
             </button> -->
 <!--             <button class="btn btn-primary" v-if="item.status !== 'completed'" @click="showModal(item)">
@@ -170,7 +163,7 @@
     margin-right: 5%;
     margin-left: 5%;
     margin-top: 25px;
-    margin-bottom: 200px;
+    margin-bottom: 250px;
   }
   i{
     padding-right: 0px !important;
