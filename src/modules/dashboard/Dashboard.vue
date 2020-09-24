@@ -59,6 +59,28 @@
           </div>
           <empty-dynamic v-else :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
         </div>
+        <!---------------------------withdrawal--------------------------------------->
+        <div class="col-12 mt-4 border bg-light shadow-sm px-2 py-4 row m-0 rounded-lg">
+          <div class="col-12 link text-primary row m-0 align-items-center" @click="redirect('/withdrawalHistory')">
+            <h5 class="col m-0 p-0 font-weight-bold">Withdrawal Requests</h5>
+            <h5 class="fa fa-arrow-right"></h5>
+          </div>
+          <div class="col-12 row m-0" v-if="withdraw !== null">
+            <div v-for="(item, index) in withdraw" :key="index" class="card ledger col-12 py-2 px-0">
+              <div class="card-header row m-0 align-items-center px-0">
+                <div class="col-md-12 col-sm-12 p-0">
+                  {{item.date_human}}
+                </div>
+                <div class="col-md-6 col-sm-auto font-weight-bold p-0">{{item.notes ? item.notes : ''}}</div>
+                <div class="col-md-6 col-sm-12 text-right font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
+                  {{item.amount > 0 ? '+ ' : '- '}}{{item.amount > 0 ? currency.displayWithCurrency(item.amount, item.currency) : currency.displayWithCurrency(item.amount * -1, item.currency)}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <empty-dynamic v-else :title="'No current withdrawals'" :action="'Your withdrawal history is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
+        </div>
+        <!------------------------withdrawal end--------------------->
       </div>
       <div class="col-md-8 col-sm-12" v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
@@ -214,6 +236,7 @@ export default{
       // ROUTER.push('/featured')
       ROUTER.push('/marketplace')
     }
+    this.retrieveWithdrawal()
     this.retrieve()
     let date = new Date()
     let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
@@ -231,6 +254,7 @@ export default{
       largest: {balance: 0},
       balance: null,
       ledger: null,
+      withdraw: null,
       options: {
         colors: ['#28a745', '#FF0000'],
         chart: {
@@ -387,6 +411,30 @@ export default{
             total: 0
           }]
         }
+      })
+    },
+    retrieveWithdrawal(){
+      let parameter = {
+        condition: [
+          {
+            value: this.user.userID,
+            column: 'account_id',
+            clause: '='
+          },
+          {
+            value: this.user.code,
+            column: 'account_code',
+            clause: '='
+          }
+        ],
+        limit: 3,
+        sort: {
+          created_at: 'desc'
+        }
+      }
+      this.APIRequest('withdrawals/retrieve_personal', parameter).then(response => {
+        console.log(response.data)
+        this.withdraw = response.data
       })
     }
   }
