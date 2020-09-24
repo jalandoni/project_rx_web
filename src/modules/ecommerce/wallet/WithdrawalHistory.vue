@@ -127,7 +127,6 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('withdrawals/retrieve_personal', parameter).then(response => {
-        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0) {
           let array = null

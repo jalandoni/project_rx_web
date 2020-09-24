@@ -274,7 +274,6 @@ export default {
     },
     show_Fee(){
       $('#transferFunds .error').remove()
-      console.log(this.amount)
       if(this.amount === 0 || this.amount === null || this.amount === '') {
         $('<div>', {
           class: 'text-danger col-12 pl-3 mb-3 error text-center',
@@ -355,7 +354,6 @@ export default {
           html: 'Your balance is not enough.'
         }).insertBefore('#transferFunds #next')
       } else {
-        // this.showFee = false
         $('#loading').css({display: 'block'})
         let par = {
           amount: this.amount,
@@ -368,9 +366,7 @@ export default {
           stage: 1,
           charge: 0
         }
-        console.log(par)
         this.APIRequest('withdrawals/create', par).then(response => {
-          console.log(response)
           $('#loading').css({display: 'none'})
           if(response.data === true) {
             this.$refs.otp.show()
@@ -402,9 +398,7 @@ export default {
         otp: otpval,
         charge: 0
       }
-      console.log(par)
       this.APIRequest('withdrawals/create', par).then(response => {
-        console.log(response)
         $('#loading').css({display: 'none'})
         if(response.data > 0) {
           this.transferred = true

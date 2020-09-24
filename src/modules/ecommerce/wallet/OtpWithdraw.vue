@@ -190,7 +190,6 @@ export default {
     },
     hideModal(){
       $('#authenticateOTP').modal('hide')
-      // this.initOtp()
     },
     redirect(parameter){
       ROUTER.push(parameter)
@@ -233,8 +232,6 @@ export default {
           this.errorMessage = null
           this.successFlag = true
           this.successMessage = 'Successfully verified!'
-          // true
-          // call proceed
         }else{
           this.successFlag = false
           this.errorMessage = 'Sorry, you are not authorize to proceed the transaction. Please get back after 30 minutes. Or you can email at ' + COMMON.APP_EMAIL + ' as well if you want to resolve the account ASAP.'
@@ -299,7 +296,6 @@ export default {
       }
     },
     successOTP(){
-      console.log(this.otpInput)
       this.$parent.successOTP(this.otpInput)
       this.hideModal()
       this.initOtp()

@@ -59,7 +59,6 @@
           </div>
           <empty-dynamic v-else :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
         </div>
-        <!---------------------------withdrawal--------------------------------------->
         <div class="col-12 mt-4 border bg-light shadow-sm px-2 py-4 row m-0 rounded-lg">
           <div class="col-12 link text-primary row m-0 align-items-center" @click="redirect('/withdrawalHistory')">
             <h5 class="col m-0 p-0 font-weight-bold">Withdrawal Requests</h5>
@@ -80,7 +79,6 @@
           </div>
           <empty-dynamic v-else :title="'No current withdrawals'" :action="'Your withdrawal history is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
         </div>
-        <!------------------------withdrawal end--------------------->
       </div>
       <div class="col-md-8 col-sm-12" v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
