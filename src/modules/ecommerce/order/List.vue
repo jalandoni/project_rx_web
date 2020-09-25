@@ -31,11 +31,11 @@
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'order_number')" v-if="sort.order_number === 'asc'"></i>
           <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'order_number')" v-if="sort.order_number === 'desc'"></i>
         </th>
-<!--         <th>
-          Name
-          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'name')" v-if="sort.name === 'asc'"></i>
-          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'name')" v-if="sort.name === 'desc'"></i>
-        </th> -->
+        <th>
+          Type of Payment
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'type')" v-if="sort.type === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'type')" v-if="sort.type === 'desc'"></i>
+        </th>
         <th>
           Location
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'location')" v-if="sort.location === 'asc'"></i>
@@ -68,16 +68,16 @@
           <td>
             {{item.order_number}}
           </td>
-            <!--<td>
-            {{item.name}}
-          </td> -->
+          <td class="text-uppercase">
+            {{item.type}}
+          </td>
           <td>
             <label :title="item.location" :alt="item.location">
               {{item.location !== null && item.location.length > 20 ? item.location.substring(0, 20) + '...' : item.location}}
             </label>
           </td>
           <td class="text-uppercase">
-            {{item.assigned_rider}}
+            {{item.assigned_rider !== null ? item.assigned_rider.name : item.assigned_rider}}
           </td>
           <td>
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled'}">{{item.status}}</label>
@@ -266,6 +266,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('locations/retrieve', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.locations = [{
@@ -304,6 +305,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -379,6 +381,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -401,6 +404,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkout_items/retrieve_on_orders', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.selectedProducts = response.data
