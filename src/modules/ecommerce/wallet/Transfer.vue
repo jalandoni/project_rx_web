@@ -10,15 +10,20 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-
-        <div class="modal-header" v-if="!next">
-          <h2 class="text-center font-weight-lighter col-12" id="transferHead">Transfer</h2>
-        </div>
-        <div class="modal-header" v-if="next">
-          <h2 class="text-center font-weight-lighter col-12" id="transferHead">Transfer to {{selectedBank.name}}</h2>
-        </div>
-
-          <div class="modal-body px-5 row m-0" v-if="!next">
+          <span v-if="successMessage !== null" class="text-primary text-center incre-row">
+            <i class="fa fa-check" style="font-size: 75px; color: #FF5B04;"></i>
+            <label class="incre-row" style="color: #FF5B04;">{{successMessage}}</label>
+          </span>
+          <center>
+            <button type="button" style="width:20%; margin-bottom: 3%; font-weight:bold;" class="btn btn-primary" @click="hideFinal()" v-if="successMessage !== null">Ok</button>
+          </center> 
+          <div class="modal-header" v-if="!next && successMessage === null">
+            <h2 class="text-center font-weight-lighter col-12" id="transferHead">Transfer</h2>
+          </div>
+          <div class="modal-header" v-if="next && successMessage === null">
+            <h2 class="text-center font-weight-lighter col-12" id="transferHead">Transfer to {{selectedBank.name}}</h2>
+          </div>
+          <div class="modal-body px-5 row m-0" v-if="!next && successMessage === null">
             <div class="container-fluid col-12" v-if="balance !== null">
               <b class="ml-1">Pick your currency</b>
               <div v-if="balance.length > 1" class="row mb-0 mt-3 mx-3 flex-column" >
@@ -69,21 +74,22 @@
             </div>
           </div>
 
-          <div class="modal-body px-5 row m-0" v-if="next">
+          <div class="modal-body px-5 row m-0" v-if="next && successMessage === null">
             <div class="container-fluid col-12 row m-0">
-              <input type="number" name="amount" id="amount" v-model="amount" autocomplete="off">
+              <input type="number" name="amount" id="amount" :disabled="!requestWithdrawal" v-model="amount" autocomplete="off">
               <label for="amount" id="hide" class="mx-auto pr-2" :currency="selectedCurrency.currency">{{currency.displayWithCurrency(amount, selectedCurrency.currency)}}</label>
               <div class="col-12 mt-2 text-center" v-if="!showFee">
                 <p style="margin-bottom: 0rem !important"><b>Processing Fee:</b>
-                {{currency.displayWithCurrency(0, selectedCurrency.currency)}}</p> 
+                {{currency.displayWithCurrency(0, selectedCurrency.currency)}}</p>
               </div>
               <div class="col-12 mt-3 text-center" style="font-size: 1.2rem">
                 <b>Available Balance</b> 
                 <br>
                 {{currency.displayWithCurrency(selectedCurrency.balance, selectedCurrency.currency)}}
               </div>
-              <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-primary" v-if="!transferred" id="next" @click="transfer()">Request Withdrawal</button>
-              <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-outline-success" v-else id="next" @click="hide()"><i class="fas fa-check mr-1"></i>Request Sent</button>
+              <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-primary" v-if="!transferred" id="next" @click="show_Fee()">Continue</button>
+              <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-primary" v-else id="next" @click="transfer()">Request Withdrawal</button>
+              <!-- <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-outline-success" v-else id="next" @click="hide()"><i class="fas fa-check mr-1"></i>Request Sent</button> -->
             </div>
           </div>
         </div>
@@ -228,6 +234,7 @@ export default {
   },
   data(){
     return {
+      successMessage: null,
       user: AUTH.user,
       common: COMMON,
       config: CONFIG,
@@ -236,6 +243,7 @@ export default {
       transferred: false,
       next: false,
       showFee: true,
+      requestWithdrawal: true,
       selectedBank: null,
       selectedCurrency: null,
       banks: [
@@ -251,31 +259,73 @@ export default {
     }
   },
   components: {
-    'otp': require('components/increment/generic/otp/Otp.vue')
+    'otp': require('src/modules/ecommerce/wallet/OtpWithdraw.vue')
   },
   methods: {
     retrieve(){
     },
     back(){
+      $('#transferFunds .error').remove()
       this.next = false
       this.showFee = true
+      this.transferred = false
+      this.requestWithdrawal = true
+      this.amount = 0
+    },
+    show_Fee(){
+      $('#transferFunds .error').remove()
+      if(this.amount === 0 || this.amount === null || this.amount === '') {
+        $('<div>', {
+          class: 'text-danger col-12 pl-3 mb-3 error text-center',
+          html: 'Please enter an amount.'
+        }).insertBefore('#transferFunds #next')
+      } else if(this.amount > this.selectedCurrency.balance) {
+        $('<div>', {
+          class: 'text-danger col-12 pl-3 mb-3 error text-center',
+          html: 'Your balance is not enough.'
+        }).insertBefore('#transferFunds #next')
+      } else {
+        this.showFee = false
+        this.transferred = true
+        this.requestWithdrawal = false
+      }
     },
     show(){
+      $('#transferFunds .error').remove()
+      this.requestWithdrawal = true
+      this.amount = 0
+      this.next = false
+      this.showFee = true
+      this.transferred = false
       if(this.balance.length <= 1){
         this.selectedCurrency = this.balance[0]
       }
       $('#transferFunds').modal('show')
     },
     hide() {
+      $('#transferFunds .error').remove()
+      this.successMessage = null
       this.selectedBank = null
       this.selectedCurrency = null
       this.next = false
       this.transferred = false
       this.showFee = true
+      this.amount = 0
       $('#transferFunds').modal('hide')
     },
+    hideFinal(){
+      $('#transferFunds .error').remove()
+      this.successMessage = null
+      this.selectedBank = null
+      this.selectedCurrency = null
+      this.next = false
+      this.transferred = false
+      this.showFee = true
+      this.amount = 0
+      $('#transferFunds').modal('hide')
+      ROUTER.push('/withdrawalHistory')
+    },
     setAmount() {
-      console.log(this.selectedBank)
       $('#transferFunds .error').remove()
       if(!this.selectedCurrency) {
         $('<div>', {
@@ -304,12 +354,32 @@ export default {
           html: 'Your balance is not enough.'
         }).insertBefore('#transferFunds #next')
       } else {
-        this.showFee = false
-        // this.$refs.otp.generateOTP()
+        $('#loading').css({display: 'block'})
+        let par = {
+          amount: this.amount,
+          account_id: this.user.userID,
+          account_code: this.user.code,
+          currency: this.selectedCurrency.currency,
+          payment_payload: this.selectedBank.type,
+          payment_payload_value: this.selectedBank.number,
+          notes: 'test',
+          stage: 1,
+          charge: 0
+        }
+        this.APIRequest('withdrawals/create', par).then(response => {
+          $('#loading').css({display: 'none'})
+          if(response.data === true) {
+            this.$refs.otp.show()
+          } else {
+            $('<div>', {
+              class: 'text-danger col-12 pl-3 text-center mb-3 error',
+              html: 'There was an error sending in your request. Please try again.'
+            }).insertBefore('#transferFunds #next')
+          }
+        })
       }
     },
-    successOTP(){
-      this.$refs.otp.hideModal()
+    successOTP(otpval){
       $('#transferFunds .error').remove()
       // $('<div>', {
       //   class: 'text-success col-12 pl-3 text-center mb-3 error',
@@ -324,16 +394,16 @@ export default {
         payment_payload: this.selectedBank.type,
         payment_payload_value: this.selectedBank.number,
         notes: 'test',
-        stage: 1,
+        stage: 2,
+        otp: otpval,
         charge: 0
       }
       this.APIRequest('withdrawals/create', par).then(response => {
         $('#loading').css({display: 'none'})
-        if(this.response.data === true) {
+        if(response.data > 0) {
           this.transferred = true
-          $('#next').removeClass('btn-primary')
-          $('#next').addClass('btn-outline-success')
-          $('#next').html('Request Sent!')
+          this.next = null
+          this.successMessage = 'Successfully sent!'
         } else {
           $('<div>', {
             class: 'text-danger col-12 pl-3 text-center mb-3 error',
