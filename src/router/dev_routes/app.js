@@ -225,6 +225,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/withdrawalHistory',
+    name: 'withdrawalHistory',
+    component: resolve => require(['modules/ecommerce/wallet/WithdrawalHistory.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
