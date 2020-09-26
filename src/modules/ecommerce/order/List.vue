@@ -115,7 +115,7 @@
                 <a class="dropdown-item" @click="showMessage(item)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message</a>
                 <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
-                  <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Show products
+                  <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Broadcast
                 </a>
                 <a class="dropdown-item" @click="generatePdf(item)"><i class="fa fa-print"></i> Print receipt</a>
                 <a class="dropdown-item" v-if="item.status !== 'completed'" @click="showModal(item)"><i class="fa fa-map-marker-alt"></i> Track locations</a>
