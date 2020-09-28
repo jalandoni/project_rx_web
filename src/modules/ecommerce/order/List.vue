@@ -77,7 +77,7 @@
             </label>
           </td>
           <td class="text-uppercase">
-            {{dataAdded.assigned_rider !== null ? dataAdded.assigned_rider.name : dataAdded.assigned_rider}}
+            {{item.assigned_rider !== null ? item.assigned_rider.name : item.assigned_rider}}
           </td>
           <td>
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
