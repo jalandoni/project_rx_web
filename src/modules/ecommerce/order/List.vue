@@ -91,17 +91,10 @@
             <!-- <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
             </button> -->
-<<<<<<< HEAD
-            <!-- <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
-              <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
-            </button> -->
-            <button class="btn btn-warning" @click="generatePdf(item)">
-=======
 <!--             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button> -->
 <!--             <button class="btn btn-warning" @click="generatePdf(item)">
->>>>>>> a1b4f68b6bab93ee4ac5d7a43554643d825747fc
               <i class="fa fa-print"></i>
             </button> -->
 <!--             <button class="btn btn-primary" v-if="item.status !== 'completed'" @click="showModal(item)">
@@ -112,10 +105,17 @@
             </button> -->
             <div class="dropdown">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-cog"></i>
+                <i class="fa fa-cog"></i> 
               </button>
+              <message-notification 
+                :item = 'item'
+                :isSeen = "indexNotif === index"
+                style="position:absolute;float:right;top:-10px;right:-5px;"/>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" @click="showMessage(item)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message</a>
+                <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message 
+                <message-notification 
+                :item = 'item'
+                :isSeen = "indexNotif === index"/></a>
                 <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Show products
@@ -226,6 +226,7 @@ import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
 import DateManipulation from './handlers/dateManipulation.js'
 import OrdersSummaryExporter from './OrdersSummaryExporter.vue'
 import InventorySummaryExporter from './InventorySummaryExporter.vue'
+import MessageNotification from './MessageNotification.vue'
 import GoogleMapModal from 'src/components/increment/generic/map/ModalGenericGlobal.vue'
 import TemplatePdf from './Template.js'
 export default {
@@ -264,7 +265,8 @@ export default {
       date: null,
       propStyle: {
         'margin-top': '10vh !important;'
-      }
+      },
+      indexNotif: null
     }
   },
   components: {
@@ -276,11 +278,13 @@ export default {
     OrdersSummaryExporter,
     InventorySummaryExporter,
     GoogleMapModal,
+    'message-notification': MessageNotification,
     'messenger': require('components/increment/messengervue/overlay/Holder.vue'),
     'rating-create': require('components/increment/generic/rating/Create.vue')
   },
   methods: {
-    showMessage(item){
+    showMessage(item, index){
+      this.indexNotif = index
       AUTH.messenger.title = item.code
       AUTH.messenger.data = item
     },
