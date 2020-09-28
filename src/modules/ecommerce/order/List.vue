@@ -80,7 +80,7 @@
             {{item.assigned_rider !== null ? item.assigned_rider.name : item.assigned_rider}}
           </td>
           <td>
-            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled'}">{{item.status}}</label>
+            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
             <label class="badge">{{item.type}}</label>
           </td>
 
@@ -88,21 +88,41 @@
             {{currency.displayWithCurrency(item.total, item.currency ? item.currency : 'PHP')}}
           </td>
           <td>
-            <button class="btn btn-primary" @click="retrieveItems(item)">
+            <!-- <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
-            </button>
-            <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
+            </button> -->
+            <!-- <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
-            </button>
-            <button class="btn btn-warning" @click="generatePdf(item)">
+            </button> -->
+            <!-- <button class="btn btn-warning" @click="generatePdf(item)"> -->
+<!--             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
+              <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
+            </button> -->
+<!--             <button class="btn btn-warning" @click="generatePdf(item)">
               <i class="fa fa-print"></i>
-            </button>
-            <button class="btn btn-primary" @click="showModal(item)">
+            </button> -->
+<!--             <button class="btn btn-primary" v-if="item.status !== 'completed'" @click="showModal(item)">
               <i class="fas fa-map-marker-alt"></i>
-            </button>
-            <button class="btn btn-warning" @click="showMessage(item)">
+            </button> -->
+            <!-- <button class="btn btn-warning" @click="showMessage(item)" v-if="item.status !== 'completed'">
               <i class="fas fa-envelope"></i>
-            </button>
+            </button> -->
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" @click="showMessage(item)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message</a>
+                <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
+                <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
+                  <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Show products
+                </a>
+                <a class="dropdown-item" @click="generatePdf(item)"><i class="fa fa-print"></i> Print receipt</a>
+                <a class="dropdown-item" v-if="item.status !== 'completed'" @click="showModal(item)"><i class="fa fa-map-marker-alt"></i> Track locations</a>
+                <a class="dropdown-item" @click="sendRate('customer', item)" v-if="item.status !== 'pending'"><i class="fa fa-star"></i> Rate Customer</a>
+                <a class="dropdown-item" @click="sendRate('rider', item)" v-if="item.assigned_rider !== null"><i class="fa fa-star"></i> Rate Rider</a>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -135,8 +155,9 @@
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
 
 
-    <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
-    <!-- <support-messenger :messages="messages" v-if="messages !== null"></support-messenger> -->
+    <GoogleMapModal ref="mapModal" :place_data="auth.checkout.locations" :propStyle="propStyle" v-if="auth.checkout.locations.length > 0"></GoogleMapModal>
+    <messenger v-if="auth.messenger.data !== null"></messenger>
+    <rating-create ref="createRating"></rating-create>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -146,7 +167,7 @@
     margin-right: 5%;
     margin-left: 5%;
     margin-top: 25px;
-    margin-bottom: 50px;
+    margin-bottom: 250px;
   }
   i{
     padding-right: 0px !important;
@@ -161,6 +182,20 @@
   .form-control-custom{
     width: 200px !important;
     float: left;
+  }
+
+  .btn-primary:hover, .dropdown button:focus, .fa:hover{
+    background-color: $primary !important;
+    color: $white;
+  }
+
+  .dropdown-item{
+    padding-top: 5px !important;
+    height: auto !important;
+    padding-bottom: 5px !important;
+  }
+  .dropdown-item:hover{
+    cursor: pointer;
   }
 
   @media (max-width: 992px) {
@@ -188,7 +223,7 @@ import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
 import DateManipulation from './handlers/dateManipulation.js'
 import OrdersSummaryExporter from './OrdersSummaryExporter.vue'
 import InventorySummaryExporter from './InventorySummaryExporter.vue'
-import GoogleMapModal from 'src/components/increment/generic/map/ModalGeneric.vue'
+import GoogleMapModal from 'src/components/increment/generic/map/ModalGenericGlobal.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
@@ -224,11 +259,9 @@ export default {
       },
       waitingBroadcast: [],
       date: null,
-      locations: [],
       propStyle: {
         'margin-top': '10vh !important;'
-      },
-      messages: null
+      }
     }
   },
   components: {
@@ -240,11 +273,13 @@ export default {
     OrdersSummaryExporter,
     InventorySummaryExporter,
     GoogleMapModal,
-    'support-messenger': require('components/increment/messengervue/overlay/Holder.vue')
+    'messenger': require('components/increment/messengervue/overlay/Holder.vue'),
+    'rating-create': require('components/increment/generic/rating/Create.vue')
   },
   methods: {
     showMessage(item){
-      this.messages = item
+      AUTH.messenger.title = item.code
+      AUTH.messenger.data = item
     },
     exportFile(name){
       if(this.date != null){
@@ -269,12 +304,22 @@ export default {
         console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
-          this.locations = [{
+          AUTH.checkout.data = item
+          AUTH.checkout.customer = {
             longitude: parseFloat(response.data[0].longitude),
             latitude: parseFloat(response.data[0].latitude),
             route: response.data[0].route,
             locality: response.data[0].locality,
-            country: response.data[0].country
+            country: response.data[0].country,
+            sender: 'customer'
+          }
+          AUTH.checkout.locations = [{
+            longitude: parseFloat(response.data[0].longitude),
+            latitude: parseFloat(response.data[0].latitude),
+            route: response.data[0].route,
+            locality: response.data[0].locality,
+            country: response.data[0].country,
+            sender: 'customer'
           }]
           setTimeout(() => {
             this.$refs.mapModal.showModal()
@@ -301,7 +346,9 @@ export default {
         }],
         sort: {
           status: 'desc'
-        }
+        },
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
@@ -309,8 +356,10 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
         }else{
           this.data = null
+          this.numPages = null
         }
       })
     },
@@ -321,7 +370,6 @@ export default {
       let rider = AUTH.user.riders[0]
       this.data = this.data.map((item, index) => {
         if(parseInt(rider.checkout_id) === parseInt(item.id)){
-          console.log(rider)
           return {
             ...item,
             assigned_rider: rider.assigned_rider
@@ -434,6 +482,14 @@ export default {
           this.PdfTemplate.template()
         }
       })
+    },
+    sendRate(type, data){
+      // payload, payloadValue, payload1, payloadValue1
+      if(type === 'rider' && data.assigned_rider !== null){
+        this.$refs.createRating.show(type, data.assigned_rider.id, 'checkout', data.id)
+      }else{
+        this.$refs.createRating.show(type, data.account_id, 'checkout', data.id)
+      }
     }
   }
 }
