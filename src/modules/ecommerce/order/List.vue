@@ -32,10 +32,10 @@
           <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'order_number')" v-if="sort.order_number === 'desc'"></i>
         </th>
         <th>
-          Type of Payment
+          <!-- Type of Payment
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'type')" v-if="sort.type === 'asc'"></i>
           <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'type')" v-if="sort.type === 'desc'"></i>
-        </th>
+        </th> -->
         <th>
           Location
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'location')" v-if="sort.location === 'asc'"></i>
@@ -68,16 +68,16 @@
           <td>
             {{item.order_number}}
           </td>
-          <td class="text-uppercase">
+          <!-- <td class="text-uppercase">
             {{item.type}}
-          </td>
+          </td> -->
           <td>
             <label :title="item.location" :alt="item.location">
               {{item.location !== null && item.location.length > 20 ? item.location.substring(0, 20) + '...' : item.location}}
             </label>
           </td>
           <td class="text-uppercase">
-            {{item.assigned_rider !== null ? item.assigned_rider.name : item.assigned_rider}}
+            {{item.assigned_rider}}
           </td>
           <td>
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
