@@ -31,11 +31,11 @@
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'order_number')" v-if="sort.order_number === 'asc'"></i>
           <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'order_number')" v-if="sort.order_number === 'desc'"></i>
         </th>
-<!--         <th>
-          Name
-          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'name')" v-if="sort.name === 'asc'"></i>
-          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'name')" v-if="sort.name === 'desc'"></i>
-        </th> -->
+        <th>
+          Type of Payment
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'type')" v-if="sort.type === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'type')" v-if="sort.type === 'desc'"></i>
+        </th>
         <th>
           Location
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'location')" v-if="sort.location === 'asc'"></i>
@@ -68,16 +68,16 @@
           <td>
             {{item.order_number}}
           </td>
-            <!--<td>
-            {{item.name}}
-          </td> -->
+          <td class="text-uppercase">
+            {{item.type}}
+          </td>
           <td>
             <label :title="item.location" :alt="item.location">
               {{item.location !== null && item.location.length > 20 ? item.location.substring(0, 20) + '...' : item.location}}
             </label>
           </td>
           <td class="text-uppercase">
-            {{item.assigned_rider ? item.assigned_rider.name : null}}
+            {{item.assigned_rider !== null ? item.assigned_rider.name : item.assigned_rider}}
           </td>
           <td>
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
@@ -91,6 +91,10 @@
             <!-- <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
             </button> -->
+            <!-- <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
+              <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
+            </button> -->
+            <!-- <button class="btn btn-warning" @click="generatePdf(item)"> -->
 <!--             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button> -->
@@ -107,10 +111,10 @@
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-cog"></i> 
               </button>
-              <message-notification 
+              <!-- <message-notification 
                 :item = 'item'
                 :isSeen = "indexNotif === index"
-                style="position:absolute;float:right;top:-10px;right:-5px;"/>
+                style="position:absolute;float:right;top:-10px;right:-5px;"/> -->
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message 
                 <message-notification 
@@ -170,7 +174,7 @@
     margin-right: 5%;
     margin-left: 5%;
     margin-top: 25px;
-    margin-bottom: 200px;
+    margin-bottom: 250px;
   }
   i{
     padding-right: 0px !important;
@@ -308,6 +312,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('locations/retrieve', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           AUTH.checkout.data = item
@@ -358,6 +363,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -434,6 +440,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -456,6 +463,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkout_items/retrieve_on_orders', parameter).then(response => {
+        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.selectedProducts = response.data
