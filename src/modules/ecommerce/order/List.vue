@@ -119,7 +119,7 @@
                 <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message 
                 <message-notification 
                 :item = 'item'
-                :isSeen = "indexNotif === index"/></a>
+                ref= "MessageNotification"/></a>
                 <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Show products
@@ -269,8 +269,7 @@ export default {
       date: null,
       propStyle: {
         'margin-top': '10vh !important;'
-      },
-      indexNotif: null
+      }
     }
   },
   components: {
@@ -288,9 +287,9 @@ export default {
   },
   methods: {
     showMessage(item, index){
-      this.indexNotif = index
       AUTH.messenger.title = item.code
       AUTH.messenger.data = item
+      this.$refs.MessageNotification[index].updateMessageNotif()
     },
     exportFile(name){
       if(this.date != null){
