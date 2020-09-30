@@ -17,8 +17,9 @@
         <tbody>
           <tr v-for="(item, index) in data" v-bind:key="index">
             <td>{{item.route}}</td>
-            <td>{{item.locality}}, {{item.region}}</td>
+            <td>{{item.route}}, {{item.locality}}, {{item.region}}</td>
             <td class="text-center">
+              <button class="btn btn-primary" @click="item, showMap()"><i class="fas fa-map-marker-alt"></i></button>
               <button class="btn btn-primary" @click="selectedBranch = item, show()" type="button"><i class="fa fa-edit"></i></button>
               <button class="btn btn-danger" @click="selectedBranch = item" type="button" data-toggle="modal" data-target="#delete"><i class="fas fa-trash-alt"></i></button>
             </td>
@@ -131,6 +132,35 @@
         </div>
       </div>
     </div>
+    <location-map 
+            ref="mapModal"
+            :place_data="data">
+            </location-map>
+
+    <!-- SHOW MAP MODAL -->
+    <div class="modal fade right" id="show" tabindex="-1" role="dialog" aria-labelledby="editHeader"
+     aria-hidden="true">
+      <div class="modal-dialog modal-side modal-notify modal-primary" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editheader">Branch Location</h5>
+            <button type="button" class="close" aria-label="Close" @click="hide()">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body p-4">
+            
+            <!-- <location-map 
+            :data="data" 
+            ref="loc">
+            </location-map> -->
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" @click="hide()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped lang="scss">
@@ -177,7 +207,7 @@
   }
 
   .table td:last-child {
-    width: 15%;
+    width: 20%;
   }
 
   td i.fa {
@@ -193,6 +223,7 @@ import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import axios from 'axios'
 import CONFIG from 'src/config.js'
+import GoogleMapModal from 'src/components/increment/generic/map/ModalGenericGlobal.vue'
 export default {
   mounted(){
     this.retrieve()
@@ -223,7 +254,9 @@ export default {
   components: {
     'google-autocomplete-location': require('src/components/increment/generic/location/GooglePlacesAutoComplete.vue'),
     'pin-location': require('modules/basic/PinLocation.vue'),
-    'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
+    'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
+    'location-map': require('modules/basic/LocationMap.vue'),
+    GoogleMapModal
   },
   methods: {
     retrieve() {
@@ -236,6 +269,7 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('locations/retrieve', par).then(response => {
+        console.log(response)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0) {
           this.data = response.data
@@ -260,6 +294,7 @@ export default {
     },
     hide() {
       $('#edit').modal('hide')
+      $('#show').modal('hide')
       this.selectedBranch = null
       this.editFlag = false
     },
@@ -343,6 +378,10 @@ export default {
           this.retrieve()
         })
       }
+    },
+    showMap(){
+      this.$refs.mapModal.showModal()
+      this.$refs.mapModal.setMap(this.data[0])
     }
   }
 }
