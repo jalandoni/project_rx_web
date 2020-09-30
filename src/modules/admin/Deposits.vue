@@ -5,6 +5,7 @@
       <thead>
         <tr>
           <td>Date</td>
+          <td>Name</td>
           <td>Via</td>
           <td>Amount</td>
           <td>Status</td>
@@ -13,8 +14,15 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
-          <td>{{item.created_at}}</td>
-          <td>{{item.payload + '/' + item.payload_value}}</td>
+          <td>{{item.date_human}}</td>
+          <td>{{item.name}}</td>
+          <td class="text-uppercase">
+            <b>{{item.payload}}</b>
+            <br>
+            {{JSON.parse(item.payload_value).account_name}}
+            <br>
+            {{JSON.parse(item.payload_value).account_number}}
+          </td>
           <td>{{currency.displayWithCurrency(item.amount, item.currency)}}</td>
           <td>
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed'}">{{item.status}}</label>
@@ -90,7 +98,7 @@ export default{
         limit: this.limit,
         offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
-      this.APIRequest('deposits/retrieve', parameter).then(response => {
+      this.APIRequest('deposits/retrieve_requests', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
