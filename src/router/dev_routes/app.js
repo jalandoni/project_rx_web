@@ -135,7 +135,7 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/marketplace/product/:code?/preview',
+    path: '/marketplace/product/:code?/:preview',
     name: 'product preview',
     component: resolve => require(['components/increment/imarketvue/marketplace/Product.vue'], resolve),
     meta: {
@@ -212,6 +212,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/admin/deposits',
+    name: 'deposits',
+    component: resolve => require(['modules/admin/Deposits.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/welcome',
     name: 'welcome',
     component: resolve => require(['modules/basic/Denied.vue'], resolve),
@@ -222,6 +229,13 @@ export default{
     path: '/messenger/:username?',
     name: 'messenger',
     component: resolve => require(['components/increment/messengervue/Messenger.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/withdrawalHistory',
+    name: 'withdrawalHistory',
+    component: resolve => require(['modules/ecommerce/wallet/WithdrawalHistory.vue'], resolve),
     meta: {
       tokenRequired: true
     }
