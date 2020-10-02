@@ -94,7 +94,11 @@
             <!-- <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button> -->
+<<<<<<< HEAD
+            <button class="btn btn-warning" @click="generatePdf(item)"></button>
+=======
             <!-- <button class="btn btn-warning" @click="generatePdf(item)"> -->
+>>>>>>> 92ecd64ea4edd7eeb7c9d271a35ca68b2d539893
 <!--             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button> -->
