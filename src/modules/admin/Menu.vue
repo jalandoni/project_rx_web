@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-primary dropdown-toggle dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selected.title}}
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -42,6 +42,10 @@ li:hover{
 .btn{
   margin-bottom: 50px !important;
 }
+.dropdown-button:hover {
+  color: white;
+  cursor: pointer;
+}
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -53,6 +57,7 @@ export default {
     'test-banner': require('components/increment/imarketvue/delivery/ViewProducts.vue')
   },
   mounted(){
+    this.returnSeleted()
   },
   data(){
     return {
@@ -88,6 +93,14 @@ export default {
     redirect(item){
       this.selected = item
       ROUTER.push(item.route)
+    },
+    returnSeleted(){
+      this.options.forEach((option) => {
+        if (option.route === this.$route.path) {
+          this.selected = option
+          return
+        }
+      })
     }
   }
 }
