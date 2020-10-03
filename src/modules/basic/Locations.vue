@@ -211,7 +211,11 @@
   }
 
   td i.fa {
-    padding-right: 0
+    padding-right: 0;
+  }
+
+  i {
+    padding: 0px 0px 0px 0px !important;
   }
 
   td i.fa:hover {
