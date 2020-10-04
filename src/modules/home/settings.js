@@ -11,7 +11,7 @@ export default {
     title: 'Be the one who can share happiness',
     subtitle: 'Great things in business are never done by one person; they are done by a team of people. Join our riders program today!',
     description: 'Great things in business are never done by one person; they are done by a team of people. Join our riders program today!',
-    image: require('src/assets/img/deliveryman.png'),
+    image: require('src/assets/img/deliveryman2.jpg'),
     template: 'right',
     background: '#fff'
   },
@@ -33,7 +33,7 @@ export default {
     description: 'Groceries deliver at your doorstep.',
     subDescription: 'Run out-of-stock? Just wait and do anything at home until your grocery knocks at your door. Download our app and order today!',
     icon: 'fas fa-shopping-basket',
-    image: require('src/assets/img/grocery.jpg')
+    image: require('src/assets/img/grocery3.png')
   }, {
     title: 'Plants & Seeds',
     description: 'Grow your love and passion in nature.',
@@ -47,13 +47,13 @@ export default {
     subDescription: 'Needed hardware supplies, buying hard no more. Download our app and order your hardware supplies today! ',
     partDescription: 'Own a hardware business? Reach your customers with Runway Express!',
     icon: 'fas fa-store-alt',
-    image: require('src/assets/img/hardware.jpg')
+    image: require('src/assets/img/hardware2.png')
   }, {
     title: 'Online Shops',
     description: 'Get more! Slow shopping no more.',
     subDescription: 'Life is hard enough already. Love shopping? Let us help you with making it easier and simpler for you. Download our app and shop for what you want today!',
     icon: 'fa fa-shopping-cart',
-    image: require('src/assets/img/onlineshop.jpg')
+    image: require('src/assets/img/onlineshop3.png')
   }, {
     title: 'Pharmacy & Cosmetics',
     description: 'Best way to shop for health & beauty.',
