@@ -439,7 +439,6 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
-        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -462,7 +461,6 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkout_items/retrieve_on_orders', parameter).then(response => {
-        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.selectedProducts = response.data
