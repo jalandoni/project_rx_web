@@ -34,7 +34,8 @@ export default {
     ledger: {
       amount: 0,
       currency: 'PHP'
-    }
+    },
+    onlineAccounts: []
   },
   messenger: {
     messages: [],

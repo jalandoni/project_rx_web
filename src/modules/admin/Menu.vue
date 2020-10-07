@@ -82,6 +82,9 @@ export default {
       }, {
         title: 'Withdrawal Request',
         route: '/admin/withdrawalRequest'
+      }, {
+        title: 'Partners',
+        route: '/admin/partners'
       }],
       selected: {
         title: 'Accounts',
