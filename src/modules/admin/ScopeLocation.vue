@@ -28,6 +28,9 @@
             <button class="btn btn-primary" @click="showModal('update', item)">
               <i class="fas fa-edit"></i>
             </button>
+            <button class="btn btn-danger" @click="deleteLocation(item)">
+              <i class="fas fa-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -83,6 +86,15 @@ export default{
     Pager
   },
   methods: {
+    deleteLocation(item){
+      let parameter = {
+        id: item.id
+      }
+      this.APIRequest('location_scopes/delete', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        this.data.splice(this.data.indexOf(item), 1)
+      })
+    },
     showModal(action, item = null){
       if(action === 'create') {
         this.modalProperty = {...propertyModal}

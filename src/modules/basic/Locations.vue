@@ -1,8 +1,9 @@
 <template>
+
   <div class="locations">
     <div class="header row justify-content-between align-items-center">
       <span class="ml-2 title">Locations</span>
-      <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#newLocation" v-if="data === null"> <span class="fa fa-plus mr-2"></span> Add Location</button>
+      <button class="btn btn-primary pull-right" type="button" data-toggle="modal" v-if="data === null" data-target="#newLocation" > <span class="fa fa-plus mr-2"></span> Add Location</button>
     </div>
     <span class="content">
       <empty-dynamic v-if="data === null" :title="'No Locations'" :action="'Add the location of your branches'" :icon="'fa fa-building'" :iconColor="'text-danger'"></empty-dynamic>
@@ -45,7 +46,7 @@
             </div>
             <div v-if="customLocation === false">
               <div class="row mb-3 justify-content-end mx-0">
-                <button class="btn btn-primary" @click="customLocation = true">Use Custom Location</button>
+                <button class="btn btn-primary" @click="isCustomLocation">Use Custom Location</button>
               </div>
               <div class="form-group">
                 <label for="location">Set Address</label>
@@ -245,7 +246,6 @@ export default {
       })
     },
     getLocation(event) {
-
       let location = {
         locality: event.locality,
         region: event.region,
@@ -309,6 +309,34 @@ export default {
           this.hide()
         })
       }
+    },
+    async isCustomLocation(){
+      if(navigator.geolocation){
+        var permissionStatus = navigator.permissions.query({name: 'geolocation'})
+        var result = await permissionStatus
+        if(result.state === 'granted') {
+          this.customLocation = true
+        } else if (result.state === 'prompt') {
+          try {
+            var location = await this.getCurrentPosition()
+            if(location){
+              this.customLocation = true
+            }
+          }catch(err) {
+            console.log(err)
+            alert('location sharing is disabled. Check system settings.')
+          }
+        } else if(result.state === 'denied') {
+          alert('location sharing is disabled. Check system settings.')
+        }
+      }else{
+        alert('location sharing is not supported in this browser')
+      }
+    },
+    getCurrentPosition(options = {}) {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, options)
+      })
     },
     editBranch() {
       this.editFlag = false
