@@ -25,7 +25,7 @@
             <button class="btn btn-primary" @click="showModal('update', item)">
               <i class="fa fa-edit"></i>
             </button>
-            <button class="btn btn-danger" @click="remove(item)">
+            <button class="btn btn-danger" @click="setOnRemoveItem(item)">
               <i class="fa fa-trash"></i>
             </button>
           </td>
@@ -39,6 +39,13 @@
         :limit="limit"
         v-if="data !== null"
         />
+
+    
+    <Confirmation
+      :title="'Removal Confirmation'"
+      :message="'Are you sure you want to continue this action?'"
+      ref="confirmation"
+      @onConfirm="removeItem"/>
 
     <empty v-if="data === null" :title="'No delivery fee available!'" :action="'Click add button to start.'"></empty>
     <increment-modal :property="modalProperty"></increment-modal>
@@ -62,6 +69,7 @@ import CURRENCY from 'src/services/currency.js'
 import COMMON from 'src/common.js'
 import Pager from 'src/components/increment/generic/pager/Pager.vue'
 import propertyModal from './DeliveryFeeModal.js'
+import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 export default{
   mounted(){
     if(this.user.type !== 'ADMIN'){
@@ -86,7 +94,8 @@ export default{
     'basic-filter': require('components/increment/generic/filter/Basic.vue'),
     'management-options': require('modules/admin/Menu.vue'),
     'increment-modal': require('components/increment/generic/modal/Modal.vue'),
-    Pager
+    Pager,
+    Confirmation
   },
   methods: {
     showModal(action, item = null){
@@ -156,9 +165,12 @@ export default{
         }
       })
     },
-    remove(id){
+    setOnRemoveItem(item){
+      this.$refs.confirmation.show(item.id)
+    },
+    remove(event){
       let parameter = {
-        id: id
+        id: event.id
       }
       this.APIRequest('delivery_fees/delete', parameter).then(response => {
         this.retrieve()

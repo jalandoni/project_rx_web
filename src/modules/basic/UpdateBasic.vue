@@ -23,6 +23,7 @@
       <billing-information v-if="activeType === 'billing_information'"></billing-information>
       <merchant v-if="activeType === 'merchant'" :title="title" :allowed="businessAllowed"></merchant>
       <notification v-if="activeType === 'notification'"></notification>
+      <settings v-if="activeType === 'settings'"></settings>
     </div>
   </div>
 
@@ -152,7 +153,8 @@ export default {
     'locations': require('modules/basic/Locations.vue'),
     'billing-information': require('components/increment/settings/BillingInformation.vue'),
     'merchant': require('modules/basic/Merchant.vue'),
-    'notification': require('components/increment/settings/Notification.vue')
+    'notification': require('components/increment/settings/Notification.vue'),
+    'settings': require('components/increment/settings/settings.vue')
   },
   methods: {
     redirect(path){

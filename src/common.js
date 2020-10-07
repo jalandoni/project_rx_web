@@ -58,7 +58,8 @@ export default {
     {title: 'Notifications', hideFrom: [], type: 'notification', allowed: []},
     {title: 'Business Locations', hideFrom: ['USER', 'RIDER'], type: 'merchant_locations', allowed: []},
     {title: 'Account', hideFrom: [], type: 'account', allowed: []},
-    {title: 'Billing Information', hideFrom: [], type: 'billing_information'}
+    {title: 'Billing Information', hideFrom: [], type: 'billing_information'},
+    {title: 'Settings', hideFrom: [], type: 'settings'}
   ],
   notificationSeting: [{
     title: 'OTP',
@@ -68,6 +69,10 @@ export default {
     flag: true
   }, {
     title: 'EMAIL',
+    flag: true
+  }],
+  broadcastSetting: [{
+    title: 'BROADCAST',
     flag: true
   }],
   referral: {

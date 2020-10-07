@@ -135,7 +135,7 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/marketplace/product/:code?/preview',
+    path: '/marketplace/product/:code?/:preview',
     name: 'product preview',
     component: resolve => require(['components/increment/imarketvue/marketplace/Product.vue'], resolve),
     meta: {
@@ -208,6 +208,13 @@ export default{
     path: '/admin/locations',
     name: 'locations',
     component: resolve => require(['modules/admin/ScopeLocation.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/admin/deposits',
+    name: 'deposits',
+    component: resolve => require(['modules/admin/Deposits.vue'], resolve),
     meta: {
       tokenRequired: true
     }

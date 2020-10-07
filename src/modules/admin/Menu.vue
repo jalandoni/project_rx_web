@@ -1,10 +1,13 @@
 <template>
-  <div class="text-center">
-    <ul>
-      <li v-for="(item, index) in options" :key="index" @click="redirect(item.route)">
-        {{item.title}}
-      </li>
-    </ul>
+  <div>
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selected.title}}
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" v-for="(item, index) in options" :key="index" @click="redirect(item)">{{item.title}}</a>
+      </div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped> 
@@ -35,6 +38,14 @@ li:hover{
   background: $primary;
   color: white;
 }
+
+.btn{
+  margin-bottom: 50px !important;
+}
+.dropdown-button:hover {
+  color: white;
+  cursor: pointer;
+}
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -46,6 +57,7 @@ export default {
     'test-banner': require('components/increment/imarketvue/delivery/ViewProducts.vue')
   },
   mounted(){
+    this.returnSeleted()
   },
   data(){
     return {
@@ -55,6 +67,9 @@ export default {
       }, {
         title: 'Delivery Fee',
         route: '/admin/deliveryfees'
+      }, {
+        title: 'Deposits',
+        route: '/admin/deposits'
       }, {
         title: 'Fund Transfer Fee',
         route: '/admin/fundtransferfees'
@@ -67,12 +82,25 @@ export default {
       }, {
         title: 'Withdrawal Request',
         route: '/admin/withdrawalRequest'
-      }]
+      }],
+      selected: {
+        title: 'Accounts',
+        route: '/admin/accounts'
+      }
     }
   },
   methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
+    redirect(item){
+      this.selected = item
+      ROUTER.push(item.route)
+    },
+    returnSeleted(){
+      this.options.forEach((option) => {
+        if (option.route === this.$route.path) {
+          this.selected = option
+          return
+        }
+      })
     }
   }
 }
