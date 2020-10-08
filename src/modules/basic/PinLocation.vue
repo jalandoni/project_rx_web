@@ -22,6 +22,9 @@ export default {
   mounted() {
     this.$getLocation({}).then(coordinates => {
       this.setInitialView(coordinates)
+    }).catch(() => {
+      alert('location sharing is denied. Check system setting to enable.')
+      this.setInitialView({lat: 14.5995, lng: 120.9842}, 5)
     })
   },
   data(){
@@ -38,7 +41,7 @@ export default {
   methods: {
     pinLocation(){
       this.$getLocation({}).then(coordinates => {
-        this.setInitialView(coordinates)
+        this.setInitialView({coordinates})
       })
     },
     useLocation(){
@@ -104,7 +107,7 @@ export default {
         })
       })
     },
-    setInitialView(location){
+    setInitialView(location, zoom = 8){
       if(this.location == null){
         this.location = {
           longitude: location.lng,
@@ -113,7 +116,7 @@ export default {
       }
       this.map = new window.google.maps.Map(this.$refs['map'], {
         center: { lat: Number(this.location.latitude), lng: Number(this.location.longitude) },
-        zoom: 8
+        zoom: zoom
       })
       this.setMarker()
     },
