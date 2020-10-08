@@ -94,11 +94,7 @@
             <!-- <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button> -->
-<<<<<<< HEAD
-            <button class="btn btn-warning" @click="generatePdf(item)"></button>
-=======
             <!-- <button class="btn btn-warning" @click="generatePdf(item)"> -->
->>>>>>> 92ecd64ea4edd7eeb7c9d271a35ca68b2d539893
 <!--             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button> -->
@@ -194,12 +190,10 @@
     width: 200px !important;
     float: left;
   }
-
   .btn-primary:hover, .dropdown button:focus, .fa:hover{
     background-color: $primary !important;
     color: $white;
   }
-
   .dropdown-item{
     padding-top: 5px !important;
     height: auto !important;
@@ -208,7 +202,6 @@
   .dropdown-item:hover{
     cursor: pointer;
   }
-
   @media (max-width: 992px) {
     .form-control-custom{
       width: 120.7px !important;
