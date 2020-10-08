@@ -219,6 +219,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/admin/partners',
+    name: 'partners',
+    component: resolve => require(['modules/admin/Partners.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/welcome',
     name: 'welcome',
     component: resolve => require(['modules/basic/Denied.vue'], resolve),
