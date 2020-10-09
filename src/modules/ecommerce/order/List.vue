@@ -450,6 +450,7 @@ export default {
       })
     },
     retrieveItems(item){
+      this.dataAdded = item
       this.retrieve()
       this.selectedItem = item
       let parameter = {
@@ -464,7 +465,6 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.selectedProducts = response.data
-          this.dataAdded = item
           this.$refs.viewProducts.showModal()
         }else{
           this.selectedProducts = null
