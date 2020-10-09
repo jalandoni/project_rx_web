@@ -37,7 +37,7 @@
             <i class="fa fa-edit text-primary" style="margin-left: 10px;" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
             <span v-if="editTypeIndex === index">
               <select class="form-control" v-model="newAccountType" style="float: left; width: 70%;">
-                <option v-for="(typeItem, typeIndex) in ['USER', 'MERCHANT', 'RIDER', 'ADMIN']" :key="typeIndex">{{typeItem}}</option>
+                <option v-for="(typeItem, typeIndex) in ['USER', 'RIDER', 'MERCHANT', 'MKTG', 'SUPPORT_TECHNICAL','SUPPORT_OPERATIONS', 'CUSTOMER_SERVICE', 'ACCOUNTING', 'BUSINESS_ADMIN', 'ADMIN']" :key="typeIndex">{{typeItem}}</option>
               </select>
               <i class="fa fa-check text-primary" style="margin-left: 5px; float: left;" @click="updateType(item, index)"></i>
               <i class="fa fa-times text-danger" style="margin-left: 5px; float: left;" @click="setEditTypeIndex(index, item)"></i>
@@ -335,7 +335,7 @@ export default{
           parameter = {
             ...this.location,
             account_id: this.selectedItem.id,
-            merchant_id: this.selectedItem.merchant.id,
+            // merchant_id: this.selectedItem.merchant.id,
             code: this.scopeLocation
           }
           route = 'locations/create'
@@ -347,6 +347,7 @@ export default{
           route = 'locations/update'
         }
       }
+      console.log(parameter)
       this.APIRequest(route, parameter).then(response => {
         if(response.data){
           this.locationMessage = 'Successfully updated!'
@@ -439,7 +440,7 @@ export default{
         }],
         sort: sort,
         limit: this.limit,
-        offset: (this.activePage > 0) ? this.activePage - 1 : this.activePage
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       this.APIRequest('accounts/retrieve_accounts', parameter).then(response => {
         $('#loading').css({display: 'none'})

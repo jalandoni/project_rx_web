@@ -23,15 +23,15 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in auth.user.onlineAccounts" :key="index">
-            <td v-if="item.account_type === 'RIDERS' || item.account_type === 'MERCHANT'">
+            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">
                 <label class="action-link text-primary">
                 {{item.username}}
                 </label>
             </td>
-            <td v-if="item.account_type === 'RIDERS' || item.account_type === 'MERCHANT'">{{item.email}}</td>
-            <td v-if="item.account_type === 'RIDERS' || item.account_type === 'MERCHANT'">{{item.partner_locations}}</td>
-            <td v-if="item.account_type === 'RIDERS' || item.account_type === 'MERCHANT'">{{item.account_type}}</td>
-            <td v-if="item.account_type === 'RIDERS' || item.account_type === 'MERCHANT'" :class="item.status === 'ONLINE' ? 'greenClass' : 'redClass'">{{item.status}}</td>
+            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">{{item.email}}</td>
+            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">{{item.partner_locations}}</td>
+            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">{{item.account_type}}</td>
+            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'" :class="item.status === 'ONLINE' ? 'greenClass' : 'redClass'">{{item.status}}</td>
         </tr>
       </tbody>
     </table>
