@@ -1,8 +1,8 @@
 export default {
   page: [{
-    title: 'A Moments of Delivered on Time.',
-    subtitle: 'Sometimes the bests moments are the ones you did not plan at all. Download our app and order your food today!',
-    description: 'Sometimes the bests moments are the ones you did not plan at all. Download our app and order your food today!',
+    title: 'Moments Delivered on Time.',
+    subtitle: 'Sometimes the best moments are the ones you did not plan at all. Download our app and order your food today!',
+    description: 'Sometimes the best moments are the ones you did not plan at all. Download our app and order your food today!',
     image: require('src/assets/img/banner.png'),
     template: 'right',
     background: '#fff'
