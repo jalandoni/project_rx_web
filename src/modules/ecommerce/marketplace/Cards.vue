@@ -6,10 +6,10 @@
   		</div>
   		<h1 class="display-4">{{header}}</h1>
   		<p class="lead">{{subheader}}</p>
-        <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
+        <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null" target="_blank">
          <img alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
         </a>
-        <a class="" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null">
+        <a class="" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" target="_blank">
          <img alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
         </a>
   	<!-- 	<hr class="my-4">
