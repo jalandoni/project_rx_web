@@ -23,25 +23,33 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in auth.user.onlineAccounts" :key="index">
-            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">
-                <label class="action-link text-primary">
+            <td>
+                <label class="action-link text-primary" @click="viewProd(item)">
+                {{item.username}}
+                </label>
+                <label class="action-link text-primary" v-if="item.account_type === 'RIDER'">
                 {{item.username}}
                 </label>
             </td>
-            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">{{item.email}}</td>
-            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">{{item.partner_locations}}</td>
-            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'">{{item.account_type}}</td>
-            <td v-if="item.account_type === 'RIDER' || item.account_type === 'MERCHANT'" :class="item.status === 'ONLINE' ? 'greenClass' : 'redClass'">{{item.status}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.partner_locations}}</td>
+            <td>{{item.account_type}}</td>
+            <td :class="item.status === 'ONLINE' ? 'greenClass' : 'redClass'">{{item.status}}</td>
         </tr>
       </tbody>
     </table>
 
+    <viewProducts 
+      ref="viewProducts" 
+      :id="merchantId">
+    </viewProducts>
+
     <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      v-if="auth.user.onlineAccounts.length > 0"
-      />
+    :pages="numPages"
+    :active="activePage"
+    :limit="limit"
+    v-if="auth.user.onlineAccounts.length > 0"
+    />
 
     <empty v-if="auth.user.onlineAccounts.length === 0" :title="'No accounts available!'" :action="'Keep growing.'"></empty>
   </div>
@@ -176,13 +184,15 @@ export default{
       sort: null,
       limit: 5,
       activePage: 1,
-      numPages: null
+      numPages: null,
+      merchantId: null
     }
   },
   components: {
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'basic-filter': require('components/increment/generic/filter/Basic.vue'),
     'management-options': require('modules/admin/Menu.vue'),
+    'viewProducts': require('src/modules/admin/Products.vue'),
     Pager
   },
   methods: {
@@ -201,13 +211,17 @@ export default{
       }
       let parameter = {
         condition: [{
-          value: filter.value + '%',
-          column: filter.column,
-          clause: 'like'
+          value: 'MERCHANT',
+          column: 'account_type',
+          clause: '='
+        }, {
+          value: 'RIDER',
+          column: 'account_type',
+          clause: 'or'
         }],
         sort: sort,
         limit: this.limit,
-        offset: (this.activePage > 0) ? this.activePage - 1 : this.activePage
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       this.APIRequest('accounts/retrieve_accounts', parameter).then(response => {
         $('#loading').css({display: 'none'})
@@ -219,6 +233,10 @@ export default{
           this.numPages = null
         }
       })
+    },
+    viewProd(item) {
+      this.merchantId = item.id
+      this.$refs.viewProducts.showModal(item.id)
     }
   }
 }
