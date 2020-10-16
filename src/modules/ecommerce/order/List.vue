@@ -80,7 +80,7 @@
             {{item.assigned_rider !== null ? item.assigned_rider.name : item.assigned_rider}}
           </td>
           <td>
-            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
+            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed' || item.status === 'accepted', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
             <label class="badge">{{item.type}}</label>
           </td>
 
@@ -123,6 +123,7 @@
                 :item = 'item'
                 :isSeen = "indexNotif === index"/></a>
                 <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
+                <a class="dropdown-item" v-if="item.status === 'accepted'" @click="acceptOrder(item)"><i class="fa fa-check"></i> Accept Order</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null && user.scope_location !== null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Broadcast
                 </a>
@@ -500,6 +501,33 @@ export default {
       }else{
         this.$refs.createRating.show(type, data.account_id, 'checkout', data.id)
       }
+    },
+    acceptOrder(item){
+      let parameter = {
+        id: item.id,
+        status: 'accepted'
+      }
+      this.APIRequest('checkouts/update', parameter).then(response => {
+        if(response.data === true){
+          item.status = 'accepted'
+          this.retrieve({'status': 'asc'})
+          let parameter = {
+            condition: [{
+              value: this.user.userID,
+              column: 'account_id',
+              clause: '='
+            }]
+          }
+          $('#loading').css({display: 'block'})
+          this.APIRequest('payloads/retrieve', parameter).then(response => {
+            $('#loading').css({display: 'none'})
+            let payloadValue = response.data[0].payload_value
+            if(payloadValue === 'auto'){
+              this.broadcastRiders(item)
+            }
+          })
+        }
+      })
     }
   }
 }
