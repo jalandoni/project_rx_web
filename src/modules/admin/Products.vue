@@ -86,7 +86,6 @@ export default {
     },
     showModal(id) {
       this.retrieve({'title': 'asc'}, {column: 'title', value: ''}, id)
-      console.log(this.id)
     },
     retrieve(sort, filter, id){
       if(filter !== null){

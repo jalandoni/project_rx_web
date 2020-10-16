@@ -80,7 +80,7 @@
             {{item.assigned_rider !== null ? item.assigned_rider.name : item.assigned_rider}}
           </td>
           <td>
-            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
+            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed' || item.status === 'accepted', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
             <label class="badge">{{item.type}}</label>
           </td>
 
@@ -121,6 +121,7 @@
                 :item = 'item'
                 ref= "MessageNotification"/></a>
                 <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
+                <a class="dropdown-item" v-if="item.status === 'accepted'" @click="acceptOrder(item)"><i class="fa fa-check"></i> Accept Order</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Broadcast
                 </a>
@@ -400,6 +401,7 @@ export default {
       }
       this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
+        console.log('nisulod ko ari')
         AUTH.checkout = {
           searchingRider: false,
           id: item.id,
@@ -440,6 +442,7 @@ export default {
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
+        console.log('retrieve ni', response.data)
         if(response.data.length > 0){
           this.data = response.data
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
@@ -498,6 +501,37 @@ export default {
       }else{
         this.$refs.createRating.show(type, data.account_id, 'checkout', data.id)
       }
+    },
+    acceptOrder(item){
+      let parameter = {
+        id: item.id,
+        status: 'accepted'
+      }
+      this.APIRequest('checkouts/update', parameter).then(response => {
+        console.log(parameter)
+        console.log(response.data)
+        if(response.data === true){
+          item.status = 'accepted'
+          this.retrieve({'status': 'asc'})
+          let parameter = {
+            condition: [{
+              value: this.user.userID,
+              column: 'account_id',
+              clause: '='
+            }]
+          }
+          $('#loading').css({display: 'block'})
+          this.APIRequest('payloads/retrieve', parameter).then(response => {
+            $('#loading').css({display: 'none'})
+            let payloadValue = response.data[0].payload_value
+            console.log(payloadValue)
+            if(payloadValue === 'auto'){
+              console.log('ang payload ky auto')
+              this.broadcastRiders(item)
+            }
+          })
+        }
+      })
     }
   }
 }
