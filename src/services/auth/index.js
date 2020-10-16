@@ -18,6 +18,7 @@ export default {
     location: null,
     profile: null,
     amount: null,
+    scope_location: null,
     subAccount: null,
     notifications: {
       data: null,
@@ -81,7 +82,7 @@ export default {
   },
   echo: null,
   currentPath: false,
-  setUser(userID, username, email, type, status, profile, notifSetting, subAccount, code, location, flag){
+  setUser(userID, username, email, type, status, profile, notifSetting, subAccount, code, location, flag, scopeLocation){
     if(userID === null){
       username = null
       email = null
@@ -92,6 +93,7 @@ export default {
       subAccount = null
       code = null
       location = null
+      scopeLocation = null
     } else {
       this.user.userID = userID * 1
       this.user.username = username
@@ -103,6 +105,7 @@ export default {
       this.user.subAccount = subAccount
       this.user.code = code
       this.user.location = location
+      this.user.scope_location = scopeLocation
       localStorage.setItem('account_id', this.user.userID)
       localStorage.setItem('account/' + code, JSON.stringify(this.user))
       if(flag){
@@ -157,7 +160,7 @@ export default {
             'column': 'id'
           }]
         }
-        this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, null, null, null, userInfo.code, null, true)
+        this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, null, null, null, userInfo.code, null, true, userInfo.scope_location)
         setTimeout(() => {
           vue.APIRequest('accounts/retrieve', parameter).then(response => {
             if(response.data.length > 0){
@@ -195,14 +198,14 @@ export default {
             'column': 'id'
           }]
         }
-        this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, null, null, null, userInfo.code, null, false)
+        this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, null, null, null, userInfo.code, null, false, userInfo.scope_location)
         setTimeout(() => {
           vue.APIRequest('accounts/retrieve', parameter).then(response => {
             let profile = response.data[0].account_profile
             let notifSetting = response.data[0].notification_settings
             let subAccount = response.data[0].sub_account
             let location = response.data[0].location
-            this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, false)
+            this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, false, userInfo.scope_location)
           }).done(response => {
             this.tokenData.verifyingToken = false
             let location = window.location.href
@@ -403,7 +406,7 @@ export default {
     let notifSetting = data[0].notification_settings
     let subAccount = data[0].sub_account
     let location = data[0].location
-    this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, true)
+    this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, true, userInfo.scope_location)
     // this.getRedirectPerUserType()
   },
   setGoogleCode(code, scope){

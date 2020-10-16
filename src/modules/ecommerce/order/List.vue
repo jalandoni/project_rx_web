@@ -111,18 +111,20 @@
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-cog"></i> 
               </button>
-              <!-- <message-notification 
+              <message-notification 
+                v-if="item.message"
                 :item = 'item'
                 :isSeen = "indexNotif === index"
-                style="position:absolute;float:right;top:-10px;right:-5px;"/> -->
+                style="position:absolute;float:right;top:-10px;right:-5px;"/>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message 
                 <message-notification 
+                v-if="item.message"
                 :item = 'item'
-                ref= "MessageNotification"/></a>
+                :isSeen = "indexNotif === index"/></a>
                 <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
                 <a class="dropdown-item" v-if="item.status === 'accepted'" @click="acceptOrder(item)"><i class="fa fa-check"></i> Accept Order</a>
-                <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
+                <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null && user.scope_location !== null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Broadcast
                 </a>
                 <a class="dropdown-item" @click="generatePdf(item)"><i class="fa fa-print"></i> Print receipt</a>
@@ -270,7 +272,8 @@ export default {
       date: null,
       propStyle: {
         'margin-top': '10vh !important;'
-      }
+      },
+      indexNotif: null
     }
   },
   components: {
@@ -288,9 +291,9 @@ export default {
   },
   methods: {
     showMessage(item, index){
+      this.indexNotif = index
       AUTH.messenger.title = item.code
       AUTH.messenger.data = item
-      this.$refs.MessageNotification[index].updateMessageNotif()
     },
     exportFile(name){
       if(this.date != null){
@@ -312,7 +315,6 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('locations/retrieve', parameter).then(response => {
-        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           AUTH.checkout.data = item
@@ -363,7 +365,6 @@ export default {
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
-        console.log(response.data)
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -394,10 +395,11 @@ export default {
       }, 100)
     },
     broadcastRiders(item){
-      // broadcasting here
+      // broadcasting here ,
       let parameter = {
         merchant: this.user.subAccount.merchant.code,
-        checkout_id: item.id
+        checkout_id: item.id,
+        scope: this.user.scope_location
       }
       this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
