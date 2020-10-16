@@ -1,9 +1,9 @@
 <template>
-  <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="faqModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header bg-primary">
-          <h5 class="modal-title text-light" id="exampleModalLabel">Frequently Ask Questions</h5>
+          <h5 class="modal-title text-light" id="exampleModalLabel">FREQUENTLY ASKED QUESTIONS</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-white">&times;</span>
           </button>
@@ -11,12 +11,12 @@
         <div class="modal-body">
           <div class="guide-holder">
             <ul class="first-ul">
-              <li><strong>Frequently Ask Questions</strong></li>  
+              <li><strong>FREQUENTLY ASKED QUESTIONS</strong></li>
             </ul>
           </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#privacyModal">Close</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#faqModal">Close</button>
         </div>
       </div>
     </div>

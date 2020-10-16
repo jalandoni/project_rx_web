@@ -10,10 +10,6 @@ import COMMON from 'src/common.js'
 import AUTH from 'src/services/auth'
 
 export default {
-
-  accountOnlines() {
-    
-  },
   broadcastAccountStatus(id, flag) {
     let parameter = {
       account_id: id
