@@ -403,7 +403,6 @@ export default {
       }
       this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
-        console.log('nisulod ko ari')
         AUTH.checkout = {
           searchingRider: false,
           id: item.id,
@@ -444,7 +443,6 @@ export default {
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
-        console.log('retrieve ni', response.data)
         if(response.data.length > 0){
           this.data = response.data
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
@@ -510,8 +508,6 @@ export default {
         status: 'accepted'
       }
       this.APIRequest('checkouts/update', parameter).then(response => {
-        console.log(parameter)
-        console.log(response.data)
         if(response.data === true){
           item.status = 'accepted'
           this.retrieve({'status': 'asc'})
@@ -526,9 +522,7 @@ export default {
           this.APIRequest('payloads/retrieve', parameter).then(response => {
             $('#loading').css({display: 'none'})
             let payloadValue = response.data[0].payload_value
-            console.log(payloadValue)
             if(payloadValue === 'auto'){
-              console.log('ang payload ky auto')
               this.broadcastRiders(item)
             }
           })
