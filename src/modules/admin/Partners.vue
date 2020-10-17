@@ -58,17 +58,14 @@
 .greenClass{
   color: green;
 }
-
 .redClass{
   color: red;
 }
-
 @import "~assets/style/colors.scss";
 .bg-primary{
   background: $primary !important;
   color: $white !important;
 }
-
 .ledger-summary-container{
   width: 100%;
   float: left;
@@ -76,7 +73,6 @@
   margin-bottom: 100px;
   margin-top: 25px;
 }
-
 .ledger-summary-container-header{
   width: 100%;
   float: left;
@@ -107,16 +103,13 @@
   overflow-y: hidden;
   padding-right: 10px;
 }
-
 td i {
   padding-right: 0px !important;
   padding-left: 0px !important;
 }
-
 .form-control-custom{
   height: 45px !important;
 }
-
 @media (max-width: 992px){
   .ledger-summary-container{
     width: 100%;
