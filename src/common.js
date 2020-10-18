@@ -81,7 +81,7 @@ export default {
     promotion: ''
   },
   socialMedia: {
-    facebook: 'runwayexpress'
+    facebook: 'RunwayExpress.co.uk'
   },
   pusher: {
     channel: 'runway',
