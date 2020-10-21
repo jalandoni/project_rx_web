@@ -180,8 +180,14 @@ import COMMON from 'src/common.js'
 import Pager from 'src/components/increment/generic/pager/Pager.vue'
 export default{
   mounted(){
-    if(this.user.type !== 'ADMIN'){
+    if(this.user.type !== 'ADMIN' && this.user.type !== 'BUSINESS_ADMIN' && this.user.type !== 'ACCOUNTING' && this.user.type !== 'MKTG'){
       ROUTER.push('/marketplace')
+    }
+    if(this.user.type === 'ACCOUNTING'){
+      ROUTER.push('/admin/deposits')
+    }
+    if(this.user.type === 'MKTG'){
+      ROUTER.push('/admin/deliveryfees')
     }
     // $('#loading').css({display: 'block'})
     this.retrieve({created_at: 'desc'}, {column: 'created_at', value: ''})

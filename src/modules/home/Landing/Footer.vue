@@ -11,10 +11,14 @@
         <li class="title"><b>Privacy and Terms</b></li>
         <li><a @click="openModal('#termsAndConditionsModal')">Terms & Conditions</a></li>
         <li><a @click="openModal('#privacyModal')">Privacy Policy</a></li>
+        <li><a @click="openModal('#returnModal')">Refund Policy</a></li>
+        <li><a @click="openModal('#returnModal')">Return Policy</a></li>
+        <li><a @click="openModal('#partnersPayoutModal')">Partners Payout Policy</a></li>
       </ul>
        <ul class="footer-widget">
         <li class="title"><b>Resources</b></li>
-        <li class="link"><a @click="openModal('#guideModal')">Guide</a></li>
+        <li class="link"><a @click="openModal('#guideMerchantModal')">Guide for Merchant</a></li>
+        <li class="link"><a @click="openModal('#guideRiderModal')">Guide for Rider</a></li>
       </ul>
     </div>
     <div class="footer" id="secondfooter">

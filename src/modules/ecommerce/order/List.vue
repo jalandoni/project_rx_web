@@ -196,12 +196,10 @@
     width: 200px !important;
     float: left;
   }
-
   .btn-primary:hover, .dropdown button:focus, .fa:hover{
     background-color: $primary !important;
     color: $white;
   }
-
   .dropdown-item{
     padding-top: 5px !important;
     height: auto !important;
@@ -210,7 +208,6 @@
   .dropdown-item:hover{
     cursor: pointer;
   }
-
   @media (max-width: 992px) {
     .form-control-custom{
       width: 120.7px !important;

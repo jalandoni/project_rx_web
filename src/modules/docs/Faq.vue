@@ -1,20 +1,22 @@
 <template>
-  <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" id="faqModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
-        <div class="modal-header bg-white">
-          <h5 class="modal-title text-danger" id="exampleModalLabel">Scanned User Alert</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="stop()">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-light" id="exampleModalLabel">FREQUENTLY ASKED QUESTIONS</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-white">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p class="text-danger">
-            New scanned user was exposed!
-          </p>
+          <div class="guide-holder">
+            <ul class="first-ul">
+              <li><strong>FREQUENTLY ASKED QUESTIONS</strong></li>
+            </ul>
+          </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#alertModal" @click="stop()">Close</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#faqModal">Close</button>
         </div>
       </div>
     </div>
@@ -65,9 +67,12 @@ ul li{
       redirect(parameter){
         ROUTER.push(parameter)
       },
-      stop(){
-        $('#alertModal').modal('hide')
-        AUTH.playNotificationSound(false)
+      direct(){
+        if(this.user.type === 'USER' || this.user.type === 'RIDER'){
+          this.redirect('marketplace')
+        }else{
+          this.redirect('profile')
+        }
       }
     }
   }
