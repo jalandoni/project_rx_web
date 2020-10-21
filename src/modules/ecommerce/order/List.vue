@@ -162,17 +162,20 @@
       :date="date"
       ref="OrdersSummaryExporter"
     ></OrdersSummaryExporter>
+    <SearchRider
+    ref="searchRider"
+    ></SearchRider>
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
 
 
-    <GoogleMapModal ref="mapModal" :place_data="auth.checkout.locations" :propStyle="propStyle" v-if="auth.checkout.locations.length > 0"></GoogleMapModal>
+    <GoogleMapModal ref="mapModal" :place_data="auth.checkout.locations" :propStyle="propStyle" v-if="auth.checkout.locations && auth.checkout.locations.length > 0"></GoogleMapModal>
     <messenger v-if="auth.messenger.data !== null"></messenger>
     <rating-create ref="createRating"></rating-create>
   </div>
 </template>
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
-  .order-holder{  
+  .order-holder{
     width: 90%;
     margin-right: 5%;
     margin-left: 5%;
@@ -236,6 +239,7 @@ import InventorySummaryExporter from './InventorySummaryExporter.vue'
 import MessageNotification from './MessageNotification.vue'
 import GoogleMapModal from 'src/components/increment/generic/map/ModalGenericGlobal.vue'
 import TemplatePdf from './Template.js'
+import SearchRider from './SearchRider.vue'
 export default {
   mounted(){
     if(this.user.type === 'USER' || this.user.type === 'RIDER') {
@@ -285,6 +289,7 @@ export default {
     OrdersSummaryExporter,
     InventorySummaryExporter,
     GoogleMapModal,
+    SearchRider,
     'message-notification': MessageNotification,
     'messenger': require('components/increment/messengervue/overlay/Holder.vue'),
     'rating-create': require('components/increment/generic/rating/Create.vue')
@@ -403,6 +408,7 @@ export default {
       }
       this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
+        this.$refs.searchRider.showModal()
         AUTH.checkout = {
           searchingRider: false,
           id: item.id,

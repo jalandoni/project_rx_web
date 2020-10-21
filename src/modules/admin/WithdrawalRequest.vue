@@ -28,9 +28,16 @@
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed'}">{{item.status}}</label>
           </td>
           <td>
-            <button class="btn btn-primary">
-              <i class="fa fa-cog"></i>
-            </button>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog"></i> 
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item"><i class="fas fa-hand-holding-usd"></i>Processing</a>
+                <a class="dropdown-item"><i class="fa fa-times"></i>&nbsp;&nbsp;&nbsp;&nbsp;Cancelled</a>
+                <a class="dropdown-item"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Completed</a>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -54,6 +61,19 @@
 }
 .fa{
   padding-right: 0px !important;
+}
+.btn-primary:hover, .dropdown button:focus, .fa:hover{
+  background-color: $primary !important;
+  color: $white;
+}
+
+.dropdown-item{
+  padding-top: 5px !important;
+  height: auto !important;
+  padding-bottom: 5px !important;
+}
+.dropdown-item:hover{
+  cursor: pointer;
 }
 </style>
 <script>
