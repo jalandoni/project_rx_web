@@ -21,7 +21,7 @@
                   <span class="nav-link" style="padding: 0 10px 0 10px;">Marketplace</span>
                 </li>
 
-                <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
+                <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN' || user.type === 'BUSINESS_ADMIN' || user.type === 'MKTG' || user.type === 'ACCOUNTING'">
                   <span class="nav-link" style="padding: 0 10px 0 10px;">Management</span>
                 </li>
               </ul>
@@ -36,7 +36,7 @@
                   <span class="nav-link" style="padding: 0 10px 0 10px;">Marketplace</span>
                 </li>
 
-                <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
+                <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN' || user.type === 'BUSINESS_ADMIN' || user.type === 'MKTG' || user.type === 'ACCOUNTING'">
                   <span class="nav-link" style="padding: 0 10px 0 10px;">Management</span>
                 </li>
               </ul>

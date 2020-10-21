@@ -4,8 +4,14 @@
       <button class="btn btn-primary dropdown-toggle dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{selected.title}}
       </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="user.type === 'ADMIN' || user.type === 'BUSINESS_ADMIN'">
         <a class="dropdown-item" v-for="(item, index) in options" :key="index" @click="redirect(item)">{{item.title}}</a>
+      </div>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="user.type === 'MKTG'">
+        <a class="dropdown-item" v-for="(item, index) in optionsMktg" :key="index" @click="redirect(item)">{{item.title}}</a>
+      </div>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="user.type === 'ACCOUNTING'">
+        <a class="dropdown-item" v-for="(item, index) in optionsAccounting" :key="index" @click="redirect(item)">{{item.title}}</a>
       </div>
     </div>
   </div>
@@ -86,10 +92,31 @@ export default {
         title: 'Partners',
         route: '/admin/partners'
       }],
+      optionsMktg: [{
+        title: 'Delivery Fee',
+        route: '/admin/deliveryfees'
+      }, {
+        title: 'Fund Transfer Fee',
+        route: '/admin/fundtransferfees'
+      }, {
+        title: 'Promos',
+        route: '/admin/promos'
+      }],
+      optionsAccounting: [{
+        title: 'Deposits',
+        route: '/admin/deposits'
+      }, {
+        title: 'Fund Transfer Fee',
+        route: '/admin/fundtransferfees'
+      }, {
+        title: 'Withdrawal Request',
+        route: '/admin/withdrawalRequest'
+      }],
       selected: {
         title: 'Accounts',
         route: '/admin/accounts'
-      }
+      },
+      user: AUTH.user
     }
   },
   methods: {

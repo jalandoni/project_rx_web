@@ -72,7 +72,7 @@ import propertyModal from './DeliveryFeeModal.js'
 import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 export default{
   mounted(){
-    if(this.user.type !== 'ADMIN'){
+    if(this.user.type !== 'ADMIN' && this.user.type !== 'BUSINESS_ADMIN' && this.user.type !== 'ACCOUNTING' && this.user.type !== 'MKTG'){
       ROUTER.push('/marketplace')
     }
     this.retrieve()
