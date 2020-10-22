@@ -132,7 +132,8 @@ export default {
     }],
     productUnits: null,
     productTitleLimit: 100,
-    variations: ['Size', 'Color']
+    variations: ['Size', 'Color'],
+    status: ['open', 'out of stock']
   },
   broadcastingFlag: true,
   passwordLimit: 8,
