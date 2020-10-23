@@ -457,6 +457,7 @@ export default{
           this.data = null
           this.numPages = null
         }
+        console.log('dfd', this.data)
       })
     },
     update(item){

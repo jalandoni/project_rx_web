@@ -400,8 +400,8 @@ export default {
       // broadcasting here ,
       let parameter = {
         merchant: this.user.subAccount.merchant.code,
-        checkout_id: item.id,
-        scope: this.user.scope_location
+        checkout_id: item.id
+        // scope: user.scope_location
       }
       this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
@@ -453,6 +453,7 @@ export default {
           this.data = null
           this.numPages = null
         }
+        console.log(this.data, this.user, this.auth)
       })
     },
     retrieveItems(item){
