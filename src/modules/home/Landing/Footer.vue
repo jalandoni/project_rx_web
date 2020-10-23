@@ -11,7 +11,7 @@
         <li class="title"><b>Privacy and Terms</b></li>
         <li><a @click="openModal('#termsAndConditionsModal')">Terms & Conditions</a></li>
         <li><a @click="openModal('#privacyModal')">Privacy Policy</a></li>
-        <li><a @click="openModal('#returnModal')">Refund Policy</a></li>
+        <li><a @click="openModal('#refundModal')">Refund Policy</a></li>
         <li><a @click="openModal('#returnModal')">Return Policy</a></li>
         <li><a @click="openModal('#partnersPayoutModal')">Partners Payout Policy</a></li>
       </ul>
@@ -76,7 +76,6 @@ footer {
   margin-top: 50px;
   overflow-y: hidden;
 }
-
 .footer-widget{
   width:32%;
   min-height: 50px;
@@ -86,8 +85,6 @@ footer {
   margin-bottom: 0px;
   position:relative;
 }
-
-
 .footer-widget li{
   list-style: none;
   padding: 5px 10px 10px 10px;
@@ -107,7 +104,6 @@ footer {
   color: #fff;
   margin-bottom: 20px;
 }
-
 .footer-widget li a:hover{
   color: #ff8e31 !important;
 }
@@ -139,19 +135,15 @@ footer-widget .title:hover{
 .text-gray{
   color: #fff;
 }
-
 .contact-us li i{
   padding-right: 10px;
 }
-
 .contact-us li .fa-phone{
   padding-right: 9px;
 }
-
 .contact-us li .fa-mobile-alt{
   padding-right: 12px;
 }
-
 .copyright{
   width: 100%;
   float: left;
@@ -175,7 +167,6 @@ footer-widget .title:hover{
   .community .title{
     text-align: center;
   }
-
   .community i{
     width: 20%;
   }
@@ -201,9 +192,11 @@ export default {
   },
   methods: {
     redirect(parameter){
+      console.log('Parameter', parameter)
       ROUTER.push(parameter)
     },
     openModal(id){
+      console.log('ID', id)
       $(id).modal('show')
     }
   }

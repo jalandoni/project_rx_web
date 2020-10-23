@@ -13,7 +13,6 @@
        <!-- <support-messenger></support-messenger> -->
        <!-- <system-footer></system-footer> -->
        <landing-footer></landing-footer>
-       <guide></guide>
        <!-- <tutorial></tutorial> -->
       </div>
       <div v-else-if="tokenData.loading === true">
@@ -26,10 +25,13 @@
       </div>
     </div>
     <!-- <system-footer></system-footer> -->
-    <alert-modal></alert-modal>
+    <!-- <alert-modal></alert-modal> -->
     <system-loading></system-loading>
     <privacy-policy></privacy-policy>
     <terms-and-conditions></terms-and-conditions>
+    <return-policy></return-policy>
+    <refund-policy></refund-policy>
+    <guide></guide>
   </div>
 </template>
 <style lang="scss">
@@ -56,7 +58,6 @@
   transition: all 1s ease 0s;
   z-index: 1;
 }
-
 .content-holder.login {
   margin-top: 50px;
 }
@@ -66,12 +67,10 @@
     margin-bottom: 1%;
     float: right; /*- changed float left to right -*/
   }
-
   .content-holder.login {
     margin-top: 60px;
   }
 }
-
 @media (min-width: 992px) and (max-width: 1199px){
   .content-holder{
     width: 71%;
@@ -80,19 +79,15 @@
     float: right; /*- changed float from left to right -*/
   }
 }
-
 /*
   BACKGROUND
 */
-
 .bg-primary{
   background: $primary !important; 
 }
-
 .bg-secondary{
   background: $primary !important; 
 }
-
 /*
   BTNS
 */
@@ -101,61 +96,48 @@
   border-color: $primary !important;
   height: 35px !important;
 }
-
 .btn-primary:hover{
   background: $darkPrimary !important;
   border-color: $darkPrimary !important;
 }
-
 .btn-primary:active{
   background: $darkPrimary !important;
   border-color: $darkPrimary !important;
 }
-
 .btn-secondary{
   background: $secondary !important;
   border-color: $secondary !important;
   height: 35px !important;
 }
-
 .btn-secondary:hover{
   background: $secondary !important;
   border-color: $secondary !important;
 }
-
 .btn-danger{
   background: $danger !important;
   height: 35px !important;
 }
-
 .btn-danger:hover{
   background: $danger !important;
   border-color: $danger !important;
 }
-
 .btn-warning{
   background: $warning !important;
   height: 35px !important;
 }
-
 /* TEXT */
-
 .text-primary{
   color: $primary !important;
 }
-
 .text-white{
   color: $white !important;
 }
-
 .text-gray{
   color: #555 !important;
 }
-
 .text-yellow{
   color: $warning !important;
 }
-
 /* 
   
   OTHERS
@@ -175,7 +157,6 @@
   background: $primary !important;
   color: white !important;
 }
-
 .action-link:hover{
   color: $primary !important;
   cursor: pointer;
@@ -201,89 +182,70 @@ td i:hover{
   cursor: pointer;
   color: $primary !important; 
 }
-
 .table tbody td{
   height: 35px !important;
   padding: .50rem !important;
 }
-
 body .modal-backdrop {
   pointer-events: none;
   background-color: transparent;
 }
-
 .modal {
   background: rgba(0,0,0,0.5);
 }
-
 .shadow-none {
   box-shadow: none!important;
 }
-
 .shadow-sm {
   box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
 }
-
 .shadow {
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
-
 .shadow-lg {
   box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
 }
-
 .link {
   color: #007bff;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
 }
-
 .link:hover {
   color: #0056b3;
   text-decoration: underline;
   cursor: pointer;
 }
-
 .link.text-primary {
   color: $primary !important;
 }
-
 .link.text-primary:hover {
   color: $darkPrimary !important;
 }
-
 .rounded-pill {
   border-radius: 50rem!important;
 }
-
 .btn-outline-primary {
   border-color: $primary !important;
   color: $primary !important;
 }
-
 .btn-outline-primary:hover {
   background: $primary !important;
   color: white !important;
 }
-
 .btn.btn-outline-primary:focus,
 .btn.btn-primary:focus {
   box-shadow: 0 0 0 3px #{$primary}80;
 }
-
 .border-bottom {
   border-bottom: 1px solid #dee2e6!important;
 }
-
 .border-top {
   border-top: 1px solid #dee2e6!important;
 }
-
 .border-right {
   border-right: 1px solid #dee2e6!important;
 }
-
 .border-left {
   border-left: 1px solid #dee2e6!important;
 }
@@ -338,6 +300,8 @@ export default {
     'landing-footer': () => import('modules/home/Landing/Footer.vue'),
     'privacy-policy': () => import('modules/docs/PrivacyPolicy.vue'),
     'terms-and-conditions': () => import('modules/docs/TermsAndConditions.vue'),
+    'return-policy': () => import('modules/docs/ReturnPolicy.vue'),
+    'refund-policy': () => import('modules/docs/RefundPolicy.vue'),
     'guide': () => import('modules/guide/Guide.vue'),
     'support-messenger': () => import('components/increment/support/Support.vue'),
     'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue'),
