@@ -353,7 +353,6 @@ export default{
           route = 'locations/update'
         }
       }
-      console.log(parameter)
       this.APIRequest(route, parameter).then(response => {
         if(response.data){
           this.locationMessage = 'Successfully updated!'
@@ -457,7 +456,6 @@ export default{
           this.data = null
           this.numPages = null
         }
-        console.log('dfd', this.data)
       })
     },
     update(item){
