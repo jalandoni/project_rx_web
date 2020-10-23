@@ -353,7 +353,6 @@ export default{
           route = 'locations/update'
         }
       }
-      console.log(parameter)
       this.APIRequest(route, parameter).then(response => {
         if(response.data){
           this.locationMessage = 'Successfully updated!'
