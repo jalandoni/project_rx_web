@@ -123,7 +123,7 @@
                 :item = 'item'
                 :isSeen = "indexNotif === index"/></a>
                 <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
-                <a class="dropdown-item" v-if="item.status === 'accepted'" @click="acceptOrder(item)"><i class="fa fa-check"></i> Accept Order</a>
+                <a class="dropdown-item" v-if="item.status === 'pending'" @click="acceptOrder(item)"><i class="fa fa-check"></i> Accept Order</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null && user.scope_location !== null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Broadcast
                 </a>
@@ -513,7 +513,7 @@ export default {
       this.APIRequest('checkouts/update', parameter).then(response => {
         if(response.data === true){
           item.status = 'accepted'
-          this.retrieve({'status': 'asc'})
+          this.retrieve({'status': 'desc'})
           let parameter = {
             condition: [{
               value: this.user.userID,

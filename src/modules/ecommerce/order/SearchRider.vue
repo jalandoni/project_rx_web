@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header bg-primary text-white">
           <h5 class="modal-title" id="exampleModalLabel">Finding a Rider</h5>
-          <button type="button" class="close" @click="hideModal()" aria-label="Close">
+          <button type="button" class="close" @click="cancel()" aria-label="Close">
             <span aria-hidden="true" class="text-white">&times;</span>
           </button>
         </div>
@@ -12,8 +12,8 @@
         <center>
             <img width="35%" alt='Finding a Rider' :src="require('assets/img/driver.png')"/>
         </center>
-        <br><br><br>
-        <div class="full d-flex justify-content-center align-items-center">
+        <br>
+        <div class="d-flex justify-content-center align-items-center">
           <div class="spinner-grow text-primary mr-3" role="status">
           </div>
           <div class="spinner-grow text-primary mr-3" role="status">
@@ -26,7 +26,7 @@
         </center>
         <br><br>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="cancel()">Cancel</button>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@ export default {
   components: {
   },
   methods: {
-    hideModal(){
+    cancel(){
       $('#riderSearchOnModal').modal('hide')
     },
     showModal(){
