@@ -19,6 +19,7 @@
         <li class="title"><b>Resources</b></li>
         <li class="link"><a @click="openModal('#guideMerchantModal')">Guide for Merchant</a></li>
         <li class="link"><a @click="openModal('#guideRiderModal')">Guide for Rider</a></li>
+        <li class="link"><a @click="openModal('#faqModal')">FAQ's</a></li>
       </ul>
     </div>
     <div class="footer" id="secondfooter">
@@ -196,7 +197,6 @@ export default {
       ROUTER.push(parameter)
     },
     openModal(id){
-      console.log('ID', id)
       $(id).modal('show')
     }
   }
