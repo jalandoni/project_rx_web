@@ -15,7 +15,7 @@
         </div>
       </div>
       <div v-if="data !== null" class="text-center">
-        <button class="btn btn-primary rounded" @click="retrieveWithdrawal(limit + 5)" v-if="!showButton">Show more</button>
+        <button class="btn btn-primary rounded" @click="retrieveWithdrawal(limit + 5)" v-if="!showButton && !show">Show more</button>
         <button class="btn btn-primary rounded" @click="retrieveWithdrawal(5)" v-if="showButton">Show less</button>
       </div>
     </div>
@@ -94,6 +94,7 @@ export default {
       common: COMMON,
       config: CONFIG,
       currency: CURRENCY,
+      show: false,
       defaultLogo: require('assets/img/favicon-alt.png'),
       data: null,
       offset: 0,
@@ -136,12 +137,16 @@ export default {
             array = response.data
           }
           this.data = array
-          if(this.dataLength === response.data.length){
-            this.showButton = true
+          if(response.size > 5){
+            if(this.dataLength === response.data.length){
+              this.showButton = true
+            }else {
+              this.limit = limit
+              this.showButton = false
+              this.dataLength = response.data.length
+            }
           }else {
-            this.limit = limit
-            this.showButton = false
-            this.dataLength = response.data.length
+            this.show = true
           }
         } else {
           if(this.offset === 0){

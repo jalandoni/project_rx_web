@@ -14,7 +14,7 @@
         </div>
       </div>
       <div v-if="data !== null" class="text-center">
-        <button class="btn btn-primary rounded" @click="retrieve(limit + 5)" v-if="!showButton">Show more</button>
+        <button class="btn btn-primary rounded" @click="retrieve(limit + 5)" v-if="!showButton && !show">Show more</button>
         <button class="btn btn-primary rounded" @click="retrieve(5)" v-if="showButton">Show less</button>
       </div>
       </div>
@@ -90,6 +90,7 @@ export default {
   data() {
     return {
       showButton: false,
+      show: false,
       user: AUTH.user,
       common: COMMON,
       config: CONFIG,
@@ -123,14 +124,17 @@ export default {
             array = response.data
           }
           this.data = array
-          if(this.dataLength === response.data.length){
-            this.showButton = true
+          if(response.size > 5){
+            if(this.dataLength === response.data.length){
+              this.showButton = true
+            }else {
+              this.limit = limit
+              this.showButton = false
+              this.dataLength = response.data.length
+            }
           }else {
-            this.limit = limit
-            this.showButton = false
-            this.dataLength = response.data.length
+            this.show = true
           }
-          // this.offset = this.offset
         } else {
           if(this.offset === 0){
             this.data = null

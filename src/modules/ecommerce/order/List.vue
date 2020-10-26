@@ -117,12 +117,12 @@
                 :isSeen = "indexNotif === index"
                 style="position:absolute;float:right;top:-10px;right:-5px;"/>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message 
+                <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="far fa-comment-alt"></i> Message 
                 <message-notification 
                 v-if="item.message"
                 :item = 'item'
                 :isSeen = "indexNotif === index"/></a>
-                <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
+                <a class="dropdown-item" @click="retrieveItems(item)"><i class="fas fa-box-open"></i> Show products</a>
                 <a class="dropdown-item" v-if="item.status === 'accepted'" @click="acceptOrder(item)"><i class="fa fa-check"></i> Accept Order</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null && user.scope_location !== null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Broadcast
@@ -162,17 +162,20 @@
       :date="date"
       ref="OrdersSummaryExporter"
     ></OrdersSummaryExporter>
+    <SearchRider
+    ref="searchRider"
+    ></SearchRider>
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
 
 
-    <GoogleMapModal ref="mapModal" :place_data="auth.checkout.locations" :propStyle="propStyle" v-if="auth.checkout.locations.length > 0"></GoogleMapModal>
+    <GoogleMapModal ref="mapModal" :place_data="auth.checkout.locations" :propStyle="propStyle" v-if="auth.checkout.locations && auth.checkout.locations.length > 0"></GoogleMapModal>
     <messenger v-if="auth.messenger.data !== null"></messenger>
     <rating-create ref="createRating"></rating-create>
   </div>
 </template>
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
-  .order-holder{  
+  .order-holder{
     width: 90%;
     margin-right: 5%;
     margin-left: 5%;
@@ -233,6 +236,7 @@ import InventorySummaryExporter from './InventorySummaryExporter.vue'
 import MessageNotification from './MessageNotification.vue'
 import GoogleMapModal from 'src/components/increment/generic/map/ModalGenericGlobal.vue'
 import TemplatePdf from './Template.js'
+import SearchRider from './SearchRider.vue'
 export default {
   mounted(){
     if(this.user.type === 'USER' || this.user.type === 'RIDER') {
@@ -282,6 +286,7 @@ export default {
     OrdersSummaryExporter,
     InventorySummaryExporter,
     GoogleMapModal,
+    SearchRider,
     'message-notification': MessageNotification,
     'messenger': require('components/increment/messengervue/overlay/Holder.vue'),
     'rating-create': require('components/increment/generic/rating/Create.vue')
@@ -395,11 +400,12 @@ export default {
       // broadcasting here ,
       let parameter = {
         merchant: this.user.subAccount.merchant.code,
-        checkout_id: item.id,
-        scope: this.user.scope_location
+        checkout_id: item.id
+        // scope: this.user.scope_location
       }
       this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
+        this.$refs.searchRider.showModal()
         AUTH.checkout = {
           searchingRider: false,
           id: item.id,
