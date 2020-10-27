@@ -32,6 +32,8 @@
     <faq></faq>
     <return-policy></return-policy>
     <refund-policy></refund-policy>
+    <partners-payout-policy></partners-payout-policy>
+
     <guide></guide>
   </div>
 </template>
@@ -304,6 +306,7 @@ export default {
     'faq': () => import('modules/docs/Faq.vue'),
     'return-policy': () => import('modules/docs/ReturnPolicy.vue'),
     'refund-policy': () => import('modules/docs/RefundPolicy.vue'),
+    'partners-payout-policy': () => import('modules/docs/PartnersPayoutPolicy.vue'),
     'guide': () => import('modules/guide/Guide.vue'),
     'support-messenger': () => import('components/increment/support/Support.vue'),
     'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue'),
