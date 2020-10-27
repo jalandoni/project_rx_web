@@ -117,12 +117,12 @@
                 :isSeen = "indexNotif === index"
                 style="position:absolute;float:right;top:-10px;right:-5px;"/>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message 
+                <a class="dropdown-item" @click="showMessage(item, index)" v-if="item.status !== 'completed'"><i class="far fa-comment-alt"></i> Message 
                 <message-notification 
                 v-if="item.message"
                 :item = 'item'
                 :isSeen = "indexNotif === index"/></a>
-                <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
+                <a class="dropdown-item" @click="retrieveItems(item)"><i class="fas fa-box-open"></i> Show products</a>
                 <a class="dropdown-item" v-if="item.status === 'pending'" @click="acceptOrder(item)"><i class="fa fa-check"></i> Accept Order</a>
                 <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null && user.scope_location !== null">
                   <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Broadcast
@@ -400,8 +400,8 @@ export default {
       // broadcasting here ,
       let parameter = {
         merchant: this.user.subAccount.merchant.code,
-        checkout_id: item.id,
-        scope: this.user.scope_location
+        checkout_id: item.id
+        // scope: this.user.scope_location
       }
       this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
