@@ -65,13 +65,6 @@
     transform: none;
   }
 }
-.full {
-  position: absolute;
-  top: 50px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 </style>
 <script>
 import ROUTER from 'src/router'
